@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../prisma';
 import axios from 'axios';
+import { logger } from '../utils/logger';
 
 export class EmitirNotaFiscalController {
     async handle(req: Request, res: Response) {
@@ -15,6 +16,7 @@ export class EmitirNotaFiscalController {
                 return res.status(400).json({ error: `Status inválido: ${solicitacao.status}` });
             }
 
+            logger.info({ solicitacaoId: id }, 'Iniciando integração com Dr. Finanças');
             // Consumo da API Externa
             const response = await axios.post(
                 'https://api.drfinancas.com/testes/notas-fiscais',
@@ -25,6 +27,7 @@ export class EmitirNotaFiscalController {
                 { headers: { 'Authorization': '87451e7c-48bc-48d1-a038-c16783dd404c' } }
             );
 
+            logger.info({ solicitacaoId: id }, 'Integração com Dr. Finanças concluída');
             const { numeroNF, dataEmissao } = response.data;
 
             const atualizado = await prisma.solicitacao.update({
@@ -36,9 +39,11 @@ export class EmitirNotaFiscalController {
                 }
             });
 
+            logger.info({ solicitacaoId: id }, 'Nota fiscal emitida com sucesso');
             return res.json(atualizado);
 
         } catch (error: any) {
+            logger.error({ error }, 'Erro ao emitir nota fiscal');
             if (axios.isAxiosError(error) && error.response) {
                 return res.status(error.response.status).json({
                     error: 'Erro na operadora de NF',

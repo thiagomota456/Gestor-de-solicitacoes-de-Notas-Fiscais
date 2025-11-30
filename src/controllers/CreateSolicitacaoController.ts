@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../prisma';
 import { solicitacaoSchema } from '../schemas/solicitacaoSchema';
+import { logger } from '../utils/logger';
 
 export class CreateSolicitacaoController {
     async handle(req: Request, res: Response) {
@@ -8,6 +9,7 @@ export class CreateSolicitacaoController {
             const result = solicitacaoSchema.safeParse(req.body);
 
             if (!result.success) {
+                logger.warn({ errors: result.error.flatten() }, 'Tentativa de criação com dados inválidos');
                 return res.status(400).json({
                     error: 'Dados inválidos',
                     detalhes: result.error.format()
@@ -15,6 +17,8 @@ export class CreateSolicitacaoController {
             }
 
             const { data } = result;
+
+            logger.info({ cnpj: data.cnpj }, 'Criando nova solicitação de NF');
 
             const solicitacao = await prisma.solicitacao.create({
                 data: {
@@ -24,9 +28,11 @@ export class CreateSolicitacaoController {
                 }
             });
 
+            logger.info({ id: solicitacao.id }, 'Solicitação criada com sucesso');
+
             return res.status(201).json(solicitacao);
         } catch (error) {
-            console.error(error);
+            logger.error({ error }, 'Erro ao criar solicitação');
             return res.status(500).json({ error: 'Erro interno.' });
         }
     }
