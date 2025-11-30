@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model Solicitacao {
+  id String @id @default(uuid())
+
+  cnpj         String
+  municipio    String
+  estado       String
+  valor        Float
+  dataDesejada DateTime
+  descricao    String
+
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  status    String @default("PENDENTE_EMISSAO")
+
+  numeroNF    String?
+  dataEmissao DateTime?
+
+  @@map("solicitacoes")
+}

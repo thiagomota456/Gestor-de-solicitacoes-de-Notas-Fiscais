@@ -1,0 +1,35 @@
+{
+  "name": "gestor-de-solicitacoes-de-notas-fiscais",
+  "version": "1.0.0",
+  "description": "App para Gestão das solicitações de Notas Fiscais",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiagomota456/Gestor-de-solicitacoes-de-Notas-Fiscais.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/thiagomota456/Gestor-de-solicitacoes-de-Notas-Fiscais/issues"
+  },
+  "homepage": "https://github.com/thiagomota456/Gestor-de-solicitacoes-de-Notas-Fiscais#readme",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "prisma": "^5.22.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
