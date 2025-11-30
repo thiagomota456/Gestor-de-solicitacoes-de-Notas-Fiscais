@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { prisma } from '../prisma';
+import { prisma } from '../lib/prisma';
 import { logger } from '../utils/logger';
 
 export class GetSolicitacaoController {

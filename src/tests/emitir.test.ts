@@ -1,7 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 import { router } from '../routes';
-import { prisma } from '../prisma';
+import { prisma } from '../lib/prisma';
 import axios from 'axios';
 
 jest.mock('axios');
