@@ -29,7 +29,7 @@ export class EmitirNotaFiscalController {
             logger.info({ solicitacaoId: id }, 'Integração com Dr. Finanças concluída');
             const { numeroNF, dataEmissao } = response.data;
 
-            const atualizado = await prisma.solicitacao.update({
+            await prisma.solicitacao.update({
                 where: { id },
                 data: {
                     status: 'EMITIDA',
@@ -39,16 +39,34 @@ export class EmitirNotaFiscalController {
             });
 
             logger.info({ solicitacaoId: id }, 'Nota fiscal emitida com sucesso');
-            return res.json(atualizado);
+            // Retorna apenas os campos solicitados
+            return res.json({ numeroNF, dataEmissao });
 
         } catch (error: any) {
             logger.error({ error }, 'Erro ao emitir nota fiscal');
+
             if (axios.isAxiosError(error) && error.response) {
-                return res.status(error.response.status).json({
-                    error: 'Erro na operadora de NF',
+                const status = error.response.status;
+                let message = 'Erro na operadora de NF';
+
+                switch (status) {
+                    case 400:
+                        message = 'Dados inválidos para emissão. Verifique os campos da solicitação.';
+                        break;
+                    case 401:
+                        message = 'Falha de autenticação com a operadora. Token inválido ou expirado.';
+                        break;
+                    case 500:
+                        message = 'Erro interno na operadora de NF. Tente novamente mais tarde.';
+                        break;
+                }
+
+                return res.status(status).json({
+                    error: message,
                     detalhes: error.response.data
                 });
             }
+
             return res.status(500).json({ error: 'Erro interno de emissão.' });
         }
     }
