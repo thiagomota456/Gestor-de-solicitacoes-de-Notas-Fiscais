@@ -22,6 +22,7 @@
   "homepage": "https://github.com/thiagomota456/Gestor-de-solicitacoes-de-Notas-Fiscais#readme",
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "axios": "^1.13.2",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "zod": "^4.1.13"

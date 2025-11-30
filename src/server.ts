@@ -3,11 +3,13 @@ import { PrismaClient } from '@prisma/client';
 import 'dotenv/config';
 import { CreateSolicitacaoController } from './controllers/CreateSolicitacaoController';
 import { GetSolicitacaoController } from './controllers/GetSolicitacaoController';
+import { EmitirNotaFiscalController } from './controllers/EmitirNotaFiscalController';
 
 const app = express();
 const prisma = new PrismaClient();
 const createSolicitacaoController = new CreateSolicitacaoController();
 const getSolicitacaoController = new GetSolicitacaoController();
+const emitirNotaFiscalController = new EmitirNotaFiscalController();
 
 app.use(express.json());
 
@@ -18,6 +20,7 @@ app.get('/', async (req, res) => {
 app.post('/solicitacoes', (req, res) => createSolicitacaoController.handle(req, res));
 app.get('/solicitacoes', (req, res) => getSolicitacaoController.index(req, res));
 app.get('/solicitacoes/:id', (req, res) => getSolicitacaoController.show(req, res));
+app.post('/solicitacoes/:id/emitir', (req, res) => emitirNotaFiscalController.handle(req, res));
 
 const PORT = 3120;
 app.listen(PORT, () => {
