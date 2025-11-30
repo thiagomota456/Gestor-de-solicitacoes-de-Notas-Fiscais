@@ -30,6 +30,7 @@ Crie um arquivo `.env` na raiz do projeto (ou use o padrão para SQLite):
 ```env
 DATABASE_URL="file:./dev.db"
 LOG_LEVEL="info"
+EXTERNAL_API_TOKEN="87451e7c-48bc-48d1-a038-c16783dd404c"
 ```
 
 ### Passo a passo

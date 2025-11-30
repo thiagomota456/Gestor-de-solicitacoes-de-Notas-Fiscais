@@ -23,7 +23,7 @@ export class EmitirNotaFiscalController {
                     ...solicitacao,
                     dataDesejada: solicitacao.dataDesejada.toISOString() // Garante ISO para o envio
                 },
-                { headers: { 'Authorization': '87451e7c-48bc-48d1-a038-c16783dd404c' } }
+                { headers: { 'Authorization': process.env.EXTERNAL_API_TOKEN } }
             );
 
             logger.info({ solicitacaoId: id }, 'Integração com Dr. Finanças concluída');
