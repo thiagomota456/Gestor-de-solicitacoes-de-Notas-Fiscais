@@ -12,7 +12,6 @@ describe('Feature: Leitura de Solicitações', () => {
 
     beforeAll(async () => {
         await prisma.solicitacao.deleteMany();
-        // Seed para este teste específico
         const item = await prisma.solicitacao.create({
             data: {
                 cnpj: "00000000000191", municipio: "Rio de Janeiro", estado: "RJ",

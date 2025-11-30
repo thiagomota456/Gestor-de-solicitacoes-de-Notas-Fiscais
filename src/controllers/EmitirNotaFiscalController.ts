@@ -17,7 +17,6 @@ export class EmitirNotaFiscalController {
             }
 
             logger.info({ solicitacaoId: id }, 'Iniciando integração com Dr. Finanças');
-            // Consumo da API Externa
             const response = await axios.post(
                 'https://api.drfinancas.com/testes/notas-fiscais',
                 {

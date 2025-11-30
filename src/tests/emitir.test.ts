@@ -41,7 +41,6 @@ describe('Feature: Emissão de NF', () => {
     });
 
     it('Deve tratar erro da API externa', async () => {
-        // Recriar um item pendente para falhar
         const itemFalha = await prisma.solicitacao.create({
             data: {
                 cnpj: "00000000000191", municipio: "Falha", estado: "SP",
