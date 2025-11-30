@@ -94,7 +94,7 @@ Para testes manuais, você pode importar o arquivo `postman_collection.json` inc
     ```
 -   **Validação de Dados:** Utilização do `Zod` na camada de entrada (Controllers) para garantir que apenas dados válidos cheguem à lógica de negócios, retornando erros 400 claros para o cliente.
 -   **Tratamento de Erros:** Blocos `try/catch` nos controllers com logging estruturado via `Pino` para facilitar a depuração sem expor detalhes sensíveis ao cliente.
--   **Integração Externa:** A emissão de NF é feita de forma síncrona na API, mas a arquitetura foi desenhada pensando em desacoplamento (conforme diagrama de arquitetura disponível na pasta `Diagrama de Arquitetura`), permitindo fácil migração para processamento assíncrono com filas.
+-   **Integração Externa:** A emissão de NF é feita de forma síncrona na API, mas a arquitetura foi desenhada pensando em desacoplamento, permitindo fácil migração para processamento assíncrono com filas.
 
 ## Documentação da API
 
@@ -151,6 +151,35 @@ Dispara o processo de emissão da Nota Fiscal integrando com a API externa.
   "dataEmissao": "2024-11-30T10:00:00.000Z"
 }
 ```
+### Proposta de Arquitetura Assíncrona
+
+![Diagrama de Arquitetura](Diagrama%20de%20Arquitetura/diagrama.png)
+
+Abaixo, o fluxo detalhado da proposta de arquitetura para processamento assíncrono:
+
+1.  **Cliente (Frontend)**
+    *   **Função:** Interface visual que envia o comando (`POST`) e escuta atualizações via `WebSocket`.
+    *   **Objetivo:** Separar a **ação** (envio) da **observação** (status), garantindo que a interface não trave aguardando resposta.
+
+2.  **API Gateway (Backend Síncrono)**
+    *   **Função:** Recebe a requisição, valida, persiste o estado inicial e despacha para a fila.
+    *   **Objetivo:** Garantir **responsividade**. Retorna `HTTP 202 Accepted` imediatamente, liberando o cliente enquanto o processamento ocorre em background.
+
+3.  **Message Broker (Fila)**
+    *   **Função:** Buffer (ex: RabbitMQ, Redis) que armazena tarefas.
+    *   **Objetivo:** **Escalabilidade** e **Segurança**. Absorve picos de tráfego e desacopla a API dos processadores (Workers).
+
+4.  **Workers (Zona de Processamento Assíncrono)**
+    *   **Função:** Serviços independentes que consomem da fila e executam a regra de negócio.
+    *   **Objetivo:** Permitir **escalabilidade horizontal** e execução de tarefas com tempos variados sem bloquear o sistema principal.
+
+5.  **Banco de Dados (Persistência)**
+    *   **Função:** Armazena o estado atual ("PENDENTE", "EMITIDA", "ERRO").
+    *   **Objetivo:** Fonte única da verdade e garantia de persistência em caso de falhas nos componentes voláteis.
+
+6.  **WebSocket Service (Tempo Real)**
+    *   **Função:** Canal direto com o navegador do cliente.
+    *   **Objetivo:** Notificar o cliente instantaneamente ("Push") assim que o processamento é concluído, eliminando a necessidade de *polling* (requisições repetitivas).
 
 ---
 Desenvolvido por Thiago Mota.
