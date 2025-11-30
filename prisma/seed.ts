@@ -3,13 +3,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-    console.log('🌱 Iniciando o seed do banco de dados...');
+    console.log('Iniciando o seed do banco de dados...');
 
-    // Limpa o banco antes de popular (opcional, mas bom para evitar duplicatas em testes)
     await prisma.solicitacao.deleteMany();
 
     const dadosMock = [
-        // 1. Pendentes de Emissão
         {
             cnpj: '12.345.678/0001-01',
             municipio: 'São Paulo',
@@ -65,7 +63,6 @@ async function main() {
             status: 'PENDENTE_EMISSAO' as const
         },
 
-        // 2. Já Emitidas (Com dados de retorno preenchidos)
         {
             cnpj: '55.555.555/0001-55',
             municipio: 'Campinas',
@@ -122,7 +119,6 @@ async function main() {
             dataEmissao: new Date('2024-11-20T11:45:00Z')
         },
 
-        // 3. Canceladas
         {
             cnpj: '10.101.010/0001-00',
             municipio: 'Brasília',
@@ -167,7 +163,7 @@ async function main() {
         });
     }
 
-    console.log(`✅ Seed concluído! ${dadosMock.length} solicitações criadas.`);
+    console.log(`Seed concluído! ${dadosMock.length} solicitações criadas.`);
 }
 
 main()

@@ -140,7 +140,5 @@ vite.config.ts.timestamp-*
 
 /src/generated/prisma
 .env
-prisma/dev.db
-prisma/dev.db"EXTERNAL_API_TOKEN="87451e7c-48bc-48d1-a038-c16783dd404c
-prisma/dev.db"EXTERNAL_API_TOKEN="87451e7c-48bc-48d1-a038-c16783dd404c-journal
-prisma/dev.db
+prisma/*.db
+prisma/*.db-journal
