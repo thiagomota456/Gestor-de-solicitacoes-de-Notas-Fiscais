@@ -182,4 +182,4 @@ Abaixo, o fluxo detalhado da proposta de arquitetura para processamento assíncr
     *   **Objetivo:** Notificar o cliente instantaneamente ("Push") assim que o processamento é concluído, eliminando a necessidade de *polling* (requisições repetitivas).
 
 ---
-Desenvolvido por Thiago Mota.
+Desenvolvido por Thiago Soares Mota.
