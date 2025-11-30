@@ -6,7 +6,7 @@ API para gestão e emissão de Notas Fiscais de serviço.
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
 ![License](https://img.shields.io/badge/License-ISC-yellow)
 
-## 🛠 Tecnologias
+## Tecnologias
 
 A stack foi escolhida visando **performance**, **segurança de tipos** e **manutenibilidade**.
 
@@ -19,7 +19,7 @@ A stack foi escolhida visando **performance**, **segurança de tipos** e **manut
 -   **Logs:** [Pino](https://github.com/pinojs/pino) - Logger de alta performance com saída estruturada em JSON.
 -   **Testes:** [Jest](https://jestjs.io/) + [Supertest](https://github.com/ladjs/supertest) - Framework de testes maduro e largamente utilizado para garantir a qualidade do código.
 
-## 🚀 Instalação e Execução
+## Instalação e Execução
 
 ### Pré-requisitos
 -   Node.js (v20 ou superior)
@@ -66,7 +66,7 @@ LOG_LEVEL="info"
     ```
     O servidor iniciará em `http://localhost:3120`.
 
-## 🧪 Testes
+## Testes
 
 O projeto possui uma suíte de testes de integração cobrindo os principais fluxos.
 
@@ -75,7 +75,7 @@ npm test
 ```
 *Nota: Os testes rodam sequencialmente (`-i`) para evitar conflitos no banco de dados SQLite.*
 
-## 🏛 Decisões de Arquitetura
+## Decisões de Arquitetura
 
 -   **Estrutura de Pastas:**
     ```
@@ -92,7 +92,7 @@ npm test
 -   **Tratamento de Erros:** Blocos `try/catch` nos controllers com logging estruturado via `Pino` para facilitar a depuração sem expor detalhes sensíveis ao cliente.
 -   **Integração Externa:** A emissão de NF é feita de forma síncrona na API, mas a arquitetura foi desenhada pensando em desacoplamento (conforme diagrama de arquitetura disponível na pasta `Diagrama de Arquitetura`), permitindo fácil migração para processamento assíncrono com filas.
 
-## 📚 Documentação da API
+## Documentação da API
 
 ### 1. Criar Solicitação
 **POST** `/solicitacoes`
