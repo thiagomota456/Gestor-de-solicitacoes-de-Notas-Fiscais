@@ -1,0 +1,141 @@
+{
+    "info": {
+        "_postman_id": "b735288a-1234-4567-8901-234567890abc",
+        "name": "Gestor de Notas Fiscais",
+        "description": "Coleção para testar a API de Gestão de Solicitações de Notas Fiscais.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "1. Criar Solicitação",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 201\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "var jsonData = pm.response.json();",
+                            "if (jsonData.id) {",
+                            "    pm.collectionVariables.set(\"solicitacaoId\", jsonData.id);",
+                            "}"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"cnpj\": \"12.345.678/0001-90\",\n  \"municipio\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"valor\": 1500.00,\n  \"dataDesejada\": \"2024-12-01T10:00:00Z\",\n  \"descricao\": \"Consultoria de TI\"\n}"
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/solicitacoes",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "solicitacoes"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "2. Listar Solicitações",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/solicitacoes",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "solicitacoes"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "3. Buscar Solicitação por ID",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "solicitacoes",
+                        "{{solicitacaoId}}"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "4. Emitir Nota Fiscal",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test(\"Response has numeroNF and dataEmissao\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.have.property(\"numeroNF\");",
+                            "    pm.expect(jsonData).to.have.property(\"dataEmissao\");",
+                            "    pm.expect(jsonData).to.not.have.property(\"id\"); // Garante que não retorna o objeto completo",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/emitir",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "solicitacoes",
+                        "{{solicitacaoId}}",
+                        "emitir"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3120",
+            "type": "string"
+        },
+        {
+            "key": "solicitacaoId",
+            "value": "",
+            "type": "string"
+        }
+    ]
+}

@@ -76,6 +76,9 @@ npm test
 ```
 *Nota: Os testes rodam sequencialmente (`-i`) para evitar conflitos no banco de dados SQLite.*
 
+### Postman
+Para testes manuais, você pode importar o arquivo `postman_collection.json` incluído na raiz do projeto. Ele contém todas as requisições configuradas e scripts de teste automatizados.
+
 ## Decisões de Arquitetura
 
 -   **Estrutura de Pastas:**
@@ -144,11 +147,8 @@ Dispara o processo de emissão da Nota Fiscal integrando com a API externa.
 **Retorno (Sucesso):**
 ```json
 {
-  "id": "...",
-  "status": "EMITIDA",
   "numeroNF": "2024001",
-  "dataEmissao": "2024-11-30T10:00:00.000Z",
-  ...
+  "dataEmissao": "2024-11-30T10:00:00.000Z"
 }
 ```
 
