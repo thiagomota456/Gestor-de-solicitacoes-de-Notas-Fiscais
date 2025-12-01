@@ -220,4 +220,8 @@ Abaixo, o fluxo detalhado da proposta de arquitetura para processamento assíncr
     *   **Objetivo:** Notificar o cliente instantaneamente ("Push") assim que o processamento é concluído, eliminando a necessidade de *polling* (requisições repetitivas).
 
 ---
+### Link de download do arquivo .env de desenvolvimento:
+Ele deve ser colocado na raiz do projeto.
+[Arquivo .env](https://drive.google.com/file/d/1gzCFTwFi6fxPN5lP17IefCZpMhfhW9AM/view?usp=sharing)
+
 Desenvolvido por Thiago Soares Mota.
