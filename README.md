@@ -71,6 +71,40 @@ NODE_ENV="development"
     ```
     O servidor iniciará em `http://localhost:3120`.
 
+## Containerização e Ambiente de Desenvolvimento
+
+O projeto foi containerizado utilizando **Docker** para assegurar a reprodutibilidade do ambiente e isolamento de dependências. A configuração foi otimizada para desenvolvimento, priorizando a compatibilidade de bibliotecas nativas e a produtividade do desenvolvedor.
+
+### Decisões Técnicas de Infraestrutura
+
+1.  **Imagem Base (`node:20-slim`):**
+    *   Optou-se pela distribuição **Debian Slim** em detrimento da Alpine Linux.
+    *   **Motivo:** O *engine* do Prisma requer bibliotecas OpenSSL específicas (`libssl`). A distribuição Alpine utiliza `musl` libc, o que frequentemente gera conflitos de compatibilidade com binários pré-compilados do Prisma. A versão Debian utiliza `glibc`, garantindo suporte nativo e estável ao OpenSSL, eliminando erros de *runtime* na conexão com o banco de dados.
+
+2.  **Hot-Reload via Volumes:**
+    *   O `docker-compose.yml` define um volume bind (`./src:/app/src`).
+    *   Isso permite que o processo `tsx watch` (executado via `npm run dev` dentro do container) detecte alterações nos arquivos locais em tempo real e reinicie o servidor automaticamente, sem necessidade de *rebuild* da imagem.
+
+3.  **Orquestração Simplificada (`start.sh`):**
+    *   Um script Shell foi desenvolvido para abstrair os comandos do Docker CLI, garantindo a execução correta da sequência de inicialização.
+
+### Automação de Inicialização
+
+O script `start.sh` executa o pipeline de inicialização do ambiente:
+
+1.  **Validação de Ambiente:** Verifica a existência do arquivo `.env`, essencial para a injeção de variáveis de ambiente no container.
+2.  **Build e Orchestration:**
+    *   Executa `docker-compose up --build -d`.
+    *   A flag `--build` força a recriação das camadas da imagem, garantindo que novas dependências do `package.json` sejam instaladas.
+    *   O modo `-d` (detached) libera o terminal enquanto o *daemon* do Docker gerencia o ciclo de vida dos containers.
+3.  **Health Check (Implícito):** Aguarda (`sleep`) a inicialização do *runtime* do Node.js e a conexão com o SQLite antes de acoplar aos logs.
+4.  **Log Streaming:** Executa `docker-compose logs -f`, acoplando o terminal aos fluxos de `stdout` e `stderr` do container para monitoramento em tempo real.
+
+Para iniciar o ambiente:
+```bash
+./start.sh
+```
+
 ## Testes
 
 O projeto possui uma suíte de testes de integração cobrindo os principais fluxos.
