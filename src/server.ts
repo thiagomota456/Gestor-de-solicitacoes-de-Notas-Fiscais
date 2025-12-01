@@ -28,7 +28,7 @@ app.get('/', async (req, res) => {
     res.json({ message: 'API de Notas Fiscais rodando!' });
 });
 
-const PORT = 3120;
+const PORT = process.env.PORT || 3120;
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });

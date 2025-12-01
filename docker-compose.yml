@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - ./src:/app/src
+      - ./prisma:/app/prisma
+    env_file:
+      - .env
+    command: sh -c "npx prisma migrate deploy && npm run dev"
